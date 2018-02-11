@@ -1,0 +1,14 @@
+com/treader/demo/controllers/UserController.class
+com/treader/demo/crawler/PostgresCrawlerFactory.class
+com/treader/demo/service/PostgresDBService.class
+com/treader/demo/repository/UserRepository.class
+com/treader/demo/mail/EmailService.class
+com/treader/demo/configs/EmailSenderConfig.class
+com/treader/demo/repository/PageRepository.class
+com/treader/demo/service/PostgresDBServiceImpl.class
+com/treader/demo/service/RedisReceiver.class
+com/treader/demo/crawler/PostgresWebCrawler.class
+com/treader/demo/DemoApplication.class
+com/treader/demo/model/User.class
+com/treader/demo/controllers/HomeController.class
+com/treader/demo/model/CrawlerPage.class
