@@ -59,9 +59,9 @@ public class EmailSenderConfig {
 
     private Properties getMailSenderProperties(){
         Properties props = new Properties();
-        props.put("mail.smtp.auth", auth);
-        props.put("mail.transport.protocol", protocol);
-        props.put("mail.smtp.starttls.enable", ttlsEnable);
+        props.put("service.smtp.auth", auth);
+        props.put("service.transport.protocol", protocol);
+        props.put("service.smtp.starttls.enable", ttlsEnable);
 
         return props;
     }
