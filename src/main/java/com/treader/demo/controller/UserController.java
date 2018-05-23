@@ -159,7 +159,11 @@ public class UserController {
 
     @GetMapping(path = "/profile")
     public UserDTO getAllUsers(@RequestParam String email) {
-        return userService.findByEmail(email);
+        UserDTO userDTO = userService.findByEmail(email);
+        if (userDTO == null) {
+            throw new LocalException(CustomError.ACCOUNT_NOT_FOUND);
+        }
+        return userDTO;
     }
 
 

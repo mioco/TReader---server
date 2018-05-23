@@ -19,13 +19,12 @@ create table url (
 
 create table user (
   id       int auto_increment primary key,
-  name     varchar(32)  not null,
+  name     varchar(32)  null,
   email    varchar(64)  not null,
   password varchar(128) not null,
   avatar   varchar(128) not null,
   role     varchar(64)  not null,
   ksid     varchar(64)  not null,
-  unique key uk_name(name),
   unique key uk_email(email)
 )
   engine = Innodb
