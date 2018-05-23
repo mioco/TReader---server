@@ -10,7 +10,7 @@ public class TagUrl {
     private Integer id;
 
     private Integer tagId;
-    private Integer UrlId;
+    private Integer urlId;
 
     public Integer getId() {
         return id;
@@ -29,10 +29,10 @@ public class TagUrl {
     }
 
     public Integer getUrlId() {
-        return UrlId;
+        return urlId;
     }
 
     public void setUrlId(Integer urlId) {
-        UrlId = urlId;
+        this.urlId = urlId;
     }
 }
