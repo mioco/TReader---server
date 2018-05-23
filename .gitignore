@@ -27,3 +27,6 @@ src/main/resources/static/bower_components
 src/main/resources/application.properties
 
 out/
+.idea
+.mvn
+
