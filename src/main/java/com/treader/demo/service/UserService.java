@@ -1,26 +1,23 @@
 package com.treader.demo.service;
 
 
+import com.treader.demo.dto.SubscriptionDTO;
+import com.treader.demo.dto.UserDTO;
 import com.treader.demo.model.User;
-import com.treader.demo.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-@Service
-public class UserService {
+import javax.servlet.http.HttpSession;
+import java.security.NoSuchAlgorithmException;
 
-    private UserRepository userRepository;
+public interface UserService {
 
-    @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    UserDTO saveOne(UserDTO userDTO) throws NoSuchAlgorithmException;
 
-    public User saveOne(User user) {
-        return userRepository.save(user);
-    }
+    UserDTO findByEmail(String email);
 
-    public User findByEmail(String email) {
-            return userRepository.findByEmail(email);
-    }
+    UserDTO resetPassword(String email, String password) throws NoSuchAlgorithmException;
+
+    UserDTO login(HttpSession session, String email, String password) throws NoSuchAlgorithmException;
+
+    void addSubscriptionUrl(User user, SubscriptionDTO subscriptionDTO);
+
 }

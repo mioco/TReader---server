@@ -1,5 +1,7 @@
-package com.treader.demo.configs;
+package com.treader.demo.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +16,8 @@ import java.util.Properties;
 
 @Configuration
 public class EmailSenderConfig {
+
+    private static final Logger log = LoggerFactory.getLogger(EmailSenderConfig.class);
 
 
     @Value("${email.sender.host}")
@@ -42,10 +46,7 @@ public class EmailSenderConfig {
     public JavaMailSender getJavaMailSender(){
 
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        System.out.print(host);
-        System.out.print(port);
-        System.out.print(username);
-        System.out.print(password);
+        log.info("{} {} {} {}", host, port, username, password);
         mailSender.setHost(host);
         mailSender.setPort(Integer.valueOf(port));
 

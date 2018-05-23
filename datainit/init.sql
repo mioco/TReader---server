@@ -1,7 +1,7 @@
 create table tag (
   id  int primary key auto_increment,
-  tag varchar(64) not null ,
-  unique uk_tag(tag)
+  tag varchar(255) not null ,
+  unique key uk_tag(tag)
 )
   engine = Innodb
   default charset = UTF8
@@ -9,9 +9,9 @@ create table tag (
 
 create table url (
   id        int primary key auto_increment,
-  url       varchar(128) null,
+  url       varchar(255) null,
   temp_item varchar(128) null,
-  unique uk_url(url)
+  unique key uk_url(url)
 )
   engine = Innodb
   default charset = UTF8

@@ -11,4 +11,5 @@ import java.util.List;
 public interface UserUrlRepository extends JpaRepository<UserUrl, Integer> {
     List<UserUrl> findByUserId(Integer userId);
     List<Url> findByUrlId(Integer urlId);
+    UserUrl findByUserIdAndUrlId(Integer userId, Integer urlId);
 }

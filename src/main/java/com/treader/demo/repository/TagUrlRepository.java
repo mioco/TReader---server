@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TagUrlRepository extends JpaRepository<TagUrl, Integer> {
+    TagUrl findByTagIdAndUrlId(Integer tagId, Integer urlId);
 }

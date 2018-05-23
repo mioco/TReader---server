@@ -1,29 +1,33 @@
-package com.treader.demo.controllers;
+package com.treader.demo.controller;
 
-import java.awt.image.BufferedImage;
-
-import javax.imageio.ImageIO;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
+import com.google.code.kaptcha.Constants;
+import com.google.code.kaptcha.Producer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.google.code.kaptcha.Constants;
-import com.google.code.kaptcha.Producer;
+import javax.imageio.ImageIO;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.awt.image.BufferedImage;
 
 @Controller
 @RequestMapping("/kaptcha/*")
 public class CaptchaController {
 
-    @Autowired
     private Producer captchaProducer;
+    private static final Logger log = LoggerFactory.getLogger(CaptchaController.class);
 
+    @Autowired
+    public CaptchaController(Producer captchaProducer) {
+        this.captchaProducer = captchaProducer;
+    }
 
 
     @RequestMapping(method = RequestMethod.GET)
@@ -31,7 +35,7 @@ public class CaptchaController {
         System.out.println(Constants.KAPTCHA_SESSION_KEY);
         HttpSession session = request.getSession();
         String code = (String)session.getAttribute(Constants.KAPTCHA_SESSION_KEY);
-        System.out.println("******************验证码是: " + code + "******************");
+        log.info("******************验证码是: " + code + "******************");
 
         response.setDateHeader("Expires", 0);
 

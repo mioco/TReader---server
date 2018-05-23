@@ -1,17 +1,17 @@
-package com.treader.demo.configs;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
+package com.treader.demo.config;
 
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.google.code.kaptcha.util.Config;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
+
 import java.util.Properties;
 
 @Component
 public class KaptchaConfig {
     @Bean
-    public DefaultKaptcha getDefaultKaptcha(){
-        com.google.code.kaptcha.impl.DefaultKaptcha defaultKaptcha = new com.google.code.kaptcha.impl.DefaultKaptcha();
+    public DefaultKaptcha getDefaultKaptcha() {
+        DefaultKaptcha defaultKaptcha = new DefaultKaptcha();
         Properties properties = new Properties();
         properties.setProperty("kaptcha.border", "no");
         properties.setProperty("kaptcha.textproducer.font.color", "blue");

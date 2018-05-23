@@ -1,20 +1,13 @@
-package com.treader.demo.model;
+package com.treader.demo.dto;
 
-import javax.persistence.*;
-import java.util.HashMap;
-import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-
-@Entity
-@Table(name = "user")
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class UserDTO {
     private Integer id;
-
     private String name;
     private String email;
+    @JsonProperty
     private String password;
     private String avatar;
     private String role;
@@ -24,9 +17,14 @@ public class User {
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -34,13 +32,16 @@ public class User {
     public String getEmail() {
         return email;
     }
+
     public void setEmail(String email) {
         this.email = email;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
+
     public void setPassword(String password) {
         this.password = password;
     }
@@ -48,31 +49,24 @@ public class User {
     public String getAvatar() {
         return avatar;
     }
-    public void setAvatar(String password) {
+
+    public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
 
     public String getRole() {
         return role;
     }
-    public void setRole(String password) {
+
+    public void setRole(String role) {
         this.role = role;
     }
 
-    public String getKsid() { return ksid; }
-    public void setKsid(String ksid) { this.ksid = ksid; }
-
-
-    public Map getUser() {
-        Map user = new HashMap();
-        user.put("uid", this.id);
-        user.put("name", this.name);
-        user.put("email", this.email);
-        user.put("avatar", this.avatar);
-        return user;
+    public String getKsid() {
+        return ksid;
     }
 
-
-
-
+    public void setKsid(String ksid) {
+        this.ksid = ksid;
+    }
 }
