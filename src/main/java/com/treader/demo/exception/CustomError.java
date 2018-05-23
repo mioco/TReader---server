@@ -10,6 +10,8 @@ public enum  CustomError {
     ALREADY_REGISTER(104, "该邮箱已注册，请直接登录！"),
     ACCOUNT_NOT_FOUND(105, "账号不存在！"),
     PASSWORD_WRONG(106,"账号或密码错误！"),
+
+    USER_NOT_FOUND(200, "用户未找到"),
     ;
 
     private int code;

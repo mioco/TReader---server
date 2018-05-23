@@ -68,8 +68,7 @@ class SecurityInterceptor extends HandlerInterceptorAdapter {
     private final static String SESSION_KEY = "user";
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-            throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         HttpSession session = request.getSession();
         if (session.getAttribute(SESSION_KEY) != null)
             return true;
