@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO findByEmail(String email) {
         User user = userRepository.findByEmail(email);
         if (user == null) {
-            throw new LocalException(CustomError.ACCOUNT_NOT_FOUND);
+            return null;
         }
         UserDTO userDTO = new UserDTO();
         BeanUtils.copyProperties(user, userDTO);
