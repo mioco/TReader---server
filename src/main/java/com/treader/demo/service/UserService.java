@@ -3,6 +3,7 @@ package com.treader.demo.service;
 
 import com.treader.demo.dto.SubscriptionDTO;
 import com.treader.demo.dto.UserDTO;
+import com.treader.demo.dto.UserUrlDTO;
 import com.treader.demo.model.User;
 
 import javax.servlet.http.HttpSession;
@@ -19,5 +20,7 @@ public interface UserService {
     UserDTO login(HttpSession session, String email, String password) throws NoSuchAlgorithmException;
 
     void addSubscriptionUrl(User user, SubscriptionDTO subscriptionDTO);
+
+    UserUrlDTO findByEmailWithUrl(String email);
 
 }

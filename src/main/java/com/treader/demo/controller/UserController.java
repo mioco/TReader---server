@@ -5,6 +5,7 @@ import com.treader.demo.config.Response;
 import com.treader.demo.dto.SubscriptionDTO;
 import com.treader.demo.dto.UserDTO;
 import com.treader.demo.dto.UserRegisterDTO;
+import com.treader.demo.dto.UserUrlDTO;
 import com.treader.demo.exception.CustomError;
 import com.treader.demo.exception.LocalException;
 import com.treader.demo.model.*;
@@ -158,12 +159,12 @@ public class UserController {
     }
 
     @GetMapping(path = "/profile")
-    public UserDTO getAllUsers(@RequestParam String email) {
-        UserDTO userDTO = userService.findByEmail(email);
-        if (userDTO == null) {
+    public UserUrlDTO getAllUsers(@RequestParam String email) {
+        UserUrlDTO userUrlDTO = userService.findByEmailWithUrl(email);
+        if (userUrlDTO == null) {
             throw new LocalException(CustomError.ACCOUNT_NOT_FOUND);
         }
-        return userDTO;
+        return userUrlDTO;
     }
 
 

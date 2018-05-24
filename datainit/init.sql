@@ -22,7 +22,7 @@ create table user (
   name     varchar(32)  null,
   email    varchar(64)  not null,
   password varchar(128) not null,
-  avatar   varchar(128) not null,
+  avatar   varchar(128) null,
   role     varchar(64)  not null,
   ksid     varchar(64)  not null,
   unique key uk_email(email)

@@ -2,6 +2,7 @@ package com.treader.demo.service.impl;
 
 import com.treader.demo.dto.SubscriptionDTO;
 import com.treader.demo.dto.UserDTO;
+import com.treader.demo.dto.UserUrlDTO;
 import com.treader.demo.exception.CustomError;
 import com.treader.demo.exception.LocalException;
 import com.treader.demo.model.*;
@@ -13,6 +14,9 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.treader.demo.util.MD5Util.getMD5;
 
@@ -127,6 +131,24 @@ public class UserServiceImpl implements UserService {
                 userUrlRepository.save(userUrl);
             }
         });
+    }
+
+    @Override
+    public UserUrlDTO findByEmailWithUrl(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            return null;
+        }
+        UserUrlDTO userUrlDTO = new UserUrlDTO();
+        BeanUtils.copyProperties(user, userUrlDTO);
+        List<UserUrl> userUrlList = userUrlRepository.findByUserId(user.getId());
+        List<Url> urlList = userUrlList.stream()
+                .map(userUrl -> {
+                    Optional<Url> urlOptional = urlRepository.findById(userUrl.getUrlId());
+                    return urlOptional.orElse(null);
+                }).collect(Collectors.toList());
+        userUrlDTO.setUrlList(urlList);
+        return userUrlDTO;
     }
 
 }
