@@ -49,7 +49,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         InterceptorRegistration addInterceptor = registry.addInterceptor(getSecurityInterceptor());
 
-        // 排除配置
+//         排除配置
         addInterceptor.excludePathPatterns("/error");
         addInterceptor.excludePathPatterns("/");
         addInterceptor.excludePathPatterns("/user/login","/user/register","/user/captcha");
