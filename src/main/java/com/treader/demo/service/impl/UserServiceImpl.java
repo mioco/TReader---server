@@ -8,6 +8,8 @@ import com.treader.demo.exception.LocalException;
 import com.treader.demo.model.*;
 import com.treader.demo.repository.*;
 import com.treader.demo.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,8 @@ import static com.treader.demo.util.MD5Util.getMD5;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
 
     private UserRepository userRepository;

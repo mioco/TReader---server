@@ -7,7 +7,7 @@ public class UserDTO {
     private Integer id;
     private String name;
     private String email;
-    @JsonProperty
+
     private String password;
     private String avatar;
     private String role;
@@ -42,6 +42,7 @@ public class UserDTO {
         return password;
     }
 
+    @JsonProperty
     public void setPassword(String password) {
         this.password = password;
     }
