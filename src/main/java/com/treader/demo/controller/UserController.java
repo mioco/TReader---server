@@ -2,10 +2,7 @@ package com.treader.demo.controller;
 
 import com.google.code.kaptcha.Constants;
 import com.treader.demo.config.Response;
-import com.treader.demo.dto.SubscriptionDTO;
-import com.treader.demo.dto.UserDTO;
-import com.treader.demo.dto.UserRegisterDTO;
-import com.treader.demo.dto.UserUrlTagDTO;
+import com.treader.demo.dto.*;
 import com.treader.demo.exception.CustomError;
 import com.treader.demo.exception.LocalException;
 import com.treader.demo.model.*;
@@ -145,12 +142,11 @@ public class UserController {
     }
 
     @PostMapping("/addSubscriptionUrl")
-    public Response addSubscriptionUrl(HttpSession httpSession,
-                                       @RequestBody SubscriptionDTO subscriptionDTO) {
+    public UrlTagDTO addSubscriptionUrl(HttpSession httpSession,
+                                        @RequestBody SubscriptionDTO subscriptionDTO) {
 
         User user = (User) httpSession.getAttribute("user");
-        userService.addSubscriptionUrl(user, subscriptionDTO);
-        return Response.success("订阅成功");
+        return userService.addSubscriptionUrl(user, subscriptionDTO);
     }
 
     @GetMapping("/getSubscriptionUrl")

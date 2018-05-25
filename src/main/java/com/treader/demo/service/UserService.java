@@ -2,6 +2,7 @@ package com.treader.demo.service;
 
 
 import com.treader.demo.dto.SubscriptionDTO;
+import com.treader.demo.dto.UrlTagDTO;
 import com.treader.demo.dto.UserDTO;
 import com.treader.demo.dto.UserUrlTagDTO;
 import com.treader.demo.model.Tag;
@@ -21,7 +22,7 @@ public interface UserService {
 
     UserDTO login(HttpSession session, String email, String password) throws NoSuchAlgorithmException;
 
-    void addSubscriptionUrl(User user, SubscriptionDTO subscriptionDTO);
+    UrlTagDTO addSubscriptionUrl(User user, SubscriptionDTO subscriptionDTO);
 
     UserUrlTagDTO findByEmailWithUrl(String email);
 

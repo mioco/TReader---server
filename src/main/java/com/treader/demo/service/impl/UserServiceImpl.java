@@ -15,6 +15,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.servlet.tags.UrlTag;
 
 import javax.servlet.http.HttpSession;
 import java.security.NoSuchAlgorithmException;
@@ -44,7 +45,7 @@ public class UserServiceImpl implements UserService {
         this.urlRepository = urlRepository;
         this.tagRepository = tagRepository;
         this.tagUrlRepository = tagUrlRepository;
-        this.userUrlRepository = userUrlRepository;
+        this.userUrlReposititory = userUrlRepository;
         this.userTagRepository = userTagRepository;
     }
 
@@ -102,7 +103,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addSubscriptionUrl(User user, SubscriptionDTO subscriptionDTO) {
+    public UrlTagDTO addSubscriptionUrl(User user, SubscriptionDTO subscriptionDTO) {
         Url url = urlRepository.findByUrl(subscriptionDTO.getUrl());
         //防止重复添加
         if (url == null) {
@@ -139,6 +140,21 @@ public class UserServiceImpl implements UserService {
                 userUrlRepository.save(userUrl);
             }
         });
+
+        UrlTagDTO urlTagDTO = new UrlTagDTO();
+        urlTagDTO.setId(urlId);
+        urlTagDTO.setUrl(url.getUrl());
+        urlTagDTO.setTempItem(url.getTempItem());
+        List<TagUrl> tagUrlList = tagUrlRepository.findByUrlId(urlId);
+        if (CollectionUtils.isEmpty(tagUrlList)) {
+            urlTagDTO.setTagList(Collections.emptyList());
+        } else {
+            List<Tag> tagList = tagUrlList.stream()
+                    .map(tagUrl -> tagRepository.findById(tagUrl.getTagId()).get())
+                    .collect(Collectors.toList());
+            urlTagDTO.setTagList(tagList);
+        }
+        return urlTagDTO;
     }
 
     @Override
@@ -165,8 +181,7 @@ public class UserServiceImpl implements UserService {
                     List<TagUrl> tagUrlList = tagUrlRepository.findByUrlId(urlId);
                     if (CollectionUtils.isEmpty(tagUrlList)) {
                         urlTagDTO.setTagList(Collections.emptyList());
-                    }
-                    else {
+                    } else {
                         List<Tag> tagList = tagUrlList.stream()
                                 .map(tagUrl -> tagRepository.findById(tagUrl.getTagId()).get())
                                 .collect(Collectors.toList());
