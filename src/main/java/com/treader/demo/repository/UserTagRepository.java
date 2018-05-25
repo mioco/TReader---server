@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface UserTagRepository extends JpaRepository<UserTag, Integer> {
     List<UserTag> findByUserId(Integer userId);
+    UserTag findByUserIdAndTagId(Integer userId, Integer tagId);
 }

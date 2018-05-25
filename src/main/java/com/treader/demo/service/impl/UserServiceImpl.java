@@ -139,6 +139,14 @@ public class UserServiceImpl implements UserService {
                 userUrl.setUserId(user.getId());
                 userUrlRepository.save(userUrl);
             }
+
+            UserTag userTag = userTagRepository.findByUserIdAndTagId(user.getId(), tag.getId());
+            if (userTag == null) {
+                userTag = new UserTag();
+                userTag.setTagId(tag.getId());
+                userTag.setUserId(user.getId());
+                userTagRepository.save(userTag);
+            }
         });
 
         UrlTagDTO urlTagDTO = new UrlTagDTO();
