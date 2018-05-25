@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
         this.urlRepository = urlRepository;
         this.tagRepository = tagRepository;
         this.tagUrlRepository = tagUrlRepository;
-        this.userUrlReposititory = userUrlRepository;
+        this.userUrlRepository = userUrlRepository;
         this.userTagRepository = userTagRepository;
     }
 
