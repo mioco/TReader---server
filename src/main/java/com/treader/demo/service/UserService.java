@@ -3,7 +3,7 @@ package com.treader.demo.service;
 
 import com.treader.demo.dto.SubscriptionDTO;
 import com.treader.demo.dto.UserDTO;
-import com.treader.demo.dto.UserUrlDTO;
+import com.treader.demo.dto.UserUrlTagDTO;
 import com.treader.demo.model.User;
 
 import javax.servlet.http.HttpSession;
@@ -21,6 +21,6 @@ public interface UserService {
 
     void addSubscriptionUrl(User user, SubscriptionDTO subscriptionDTO);
 
-    UserUrlDTO findByEmailWithUrl(String email);
+    UserUrlTagDTO findByEmailWithUrl(String email);
 
 }

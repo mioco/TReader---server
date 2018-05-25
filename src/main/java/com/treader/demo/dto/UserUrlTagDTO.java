@@ -2,11 +2,10 @@ package com.treader.demo.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.treader.demo.model.Url;
 
 import java.util.List;
 
-public class UserUrlDTO {
+public class UserUrlTagDTO {
     private Integer id;
     private String name;
     private String email;
@@ -16,14 +15,14 @@ public class UserUrlDTO {
     private String role;
     private String ksid;
 
-    private List<Url> urlList;
+    private List<UrlTagDTO> urlTagList;
 
-    public List<Url> getUrlList() {
-        return urlList;
+    public List<UrlTagDTO> getUrlTagList() {
+        return urlTagList;
     }
 
-    public void setUrlList(List<Url> urlList) {
-        this.urlList = urlList;
+    public void setUrlTagList(List<UrlTagDTO> urlTagList) {
+        this.urlTagList = urlTagList;
     }
 
     public Integer getId() {

@@ -1,8 +1,9 @@
 package com.treader.demo.service.impl;
 
 import com.treader.demo.dto.SubscriptionDTO;
+import com.treader.demo.dto.UrlTagDTO;
 import com.treader.demo.dto.UserDTO;
-import com.treader.demo.dto.UserUrlDTO;
+import com.treader.demo.dto.UserUrlTagDTO;
 import com.treader.demo.exception.CustomError;
 import com.treader.demo.exception.LocalException;
 import com.treader.demo.model.*;
@@ -13,9 +14,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.servlet.http.HttpSession;
 import java.security.NoSuchAlgorithmException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -126,7 +129,6 @@ public class UserServiceImpl implements UserService {
             }
 
 
-
             UserUrl userUrl = userUrlRepository.findByUserIdAndUrlId(user.getId(), urlId);
             if (userUrl == null) {
                 userUrl = new UserUrl();
@@ -138,21 +140,41 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserUrlDTO findByEmailWithUrl(String email) {
+    public UserUrlTagDTO findByEmailWithUrl(String email) {
         User user = userRepository.findByEmail(email);
         if (user == null) {
             return null;
         }
-        UserUrlDTO userUrlDTO = new UserUrlDTO();
-        BeanUtils.copyProperties(user, userUrlDTO);
+        UserUrlTagDTO userUrlTagDTO = new UserUrlTagDTO();
+        BeanUtils.copyProperties(user, userUrlTagDTO);
         List<UserUrl> userUrlList = userUrlRepository.findByUserId(user.getId());
-        List<Url> urlList = userUrlList.stream()
+        List<UrlTagDTO> urlTagDTOList = userUrlList.stream()
                 .map(userUrl -> {
                     Optional<Url> urlOptional = urlRepository.findById(userUrl.getUrlId());
-                    return urlOptional.orElse(null);
+                    Url url = urlOptional.get();
+                    UrlTagDTO urlTagDTO = new UrlTagDTO();
+
+                    urlTagDTO.setId(url.getId());
+                    urlTagDTO.setUrl(url.getUrl());
+                    urlTagDTO.setTempItem(url.getTempItem());
+
+
+                    int urlId = url.getId();
+                    List<TagUrl> tagUrlList = tagUrlRepository.findByUrlId(urlId);
+                    if (CollectionUtils.isEmpty(tagUrlList)) {
+                        urlTagDTO.setTagList(Collections.emptyList());
+                    }
+                    else {
+                        List<Tag> tagList = tagUrlList.stream()
+                                .map(tagUrl -> tagRepository.findById(tagUrl.getTagId()).get())
+                                .collect(Collectors.toList());
+                        urlTagDTO.setTagList(tagList);
+                    }
+                    return urlTagDTO;
+
                 }).collect(Collectors.toList());
-        userUrlDTO.setUrlList(urlList);
-        return userUrlDTO;
+        userUrlTagDTO.setUrlTagList(urlTagDTOList);
+        return userUrlTagDTO;
     }
 
 }
