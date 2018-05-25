@@ -9,7 +9,7 @@ public class UserUrlTagDTO {
     private Integer id;
     private String name;
     private String email;
-    @JsonProperty
+
     private String password;
     private String avatar;
     private String role;
@@ -54,6 +54,7 @@ public class UserUrlTagDTO {
         return password;
     }
 
+    @JsonProperty
     public void setPassword(String password) {
         this.password = password;
     }

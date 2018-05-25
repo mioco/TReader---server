@@ -73,7 +73,7 @@ class SecurityInterceptor extends HandlerInterceptorAdapter {
         if (session.getAttribute(SESSION_KEY) != null)
             return true;
 
-        //返回401
+//        返回401
         response.setStatus(401);
         return false;
     }
