@@ -36,14 +36,16 @@ public class UserServiceImpl implements UserService {
     private TagRepository tagRepository;
     private TagUrlRepository tagUrlRepository;
     private UserUrlRepository userUrlRepository;
+    private UserTagRepository userTagRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, UrlRepository urlRepository, TagRepository tagRepository, TagUrlRepository tagUrlRepository, UserUrlRepository userUrlRepository) {
+    public UserServiceImpl(UserRepository userRepository, UrlRepository urlRepository, TagRepository tagRepository, TagUrlRepository tagUrlRepository, UserUrlRepository userUrlRepository, UserTagRepository userTagRepository) {
         this.userRepository = userRepository;
         this.urlRepository = urlRepository;
         this.tagRepository = tagRepository;
         this.tagUrlRepository = tagUrlRepository;
         this.userUrlRepository = userUrlRepository;
+        this.userTagRepository = userTagRepository;
     }
 
 
@@ -175,6 +177,19 @@ public class UserServiceImpl implements UserService {
                 }).collect(Collectors.toList());
         userUrlTagDTO.setUrlTagList(urlTagDTOList);
         return userUrlTagDTO;
+    }
+
+    @Override
+    public List<Tag> findAllTagsByEmail(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            return Collections.emptyList();
+        }
+        List<UserTag> userTagList = userTagRepository.findByUserId(user.getId());
+        List<Tag> tagList = userTagList.stream()
+                .map(userTag -> tagRepository.findById(userTag.getTagId()).get())
+                .collect(Collectors.toList());
+        return tagList;
     }
 
 }

@@ -45,7 +45,7 @@ public class UserController {
     public UserDTO register(@RequestBody UserRegisterDTO userRegisterDTO, HttpSession session) throws NoSuchAlgorithmException {
 
         String email = userRegisterDTO.getEmail();
-        String captcha = redisService.getFromCache("captcha-"+email);
+        String captcha = redisService.getFromCache("captcha-" + email);
         //验证码过期
         if (StringUtils.isEmpty(captcha)) {
             throw new LocalException(CustomError.CAPTCHA_EXPRITE);
@@ -85,7 +85,7 @@ public class UserController {
         emailService.sendMailCode(email, "TReader - 注册验证码", "" + captcha);
 
         //验证码30分钟ttl
-        redisService.setToCacheTTL("captcha-"+email, String.valueOf(captcha), 30, TimeUnit.MINUTES);
+        redisService.setToCacheTTL("captcha-" + email, String.valueOf(captcha), 30, TimeUnit.MINUTES);
         return true;
     }
 
@@ -113,7 +113,7 @@ public class UserController {
 
         String token = UUID.randomUUID().toString().replace("-", "");
 
-        redisService.setToCache("resetToken-"+email, token);
+        redisService.setToCache("resetToken-" + email, token);
 
         emailService.sendMailResetUrl(
                 email, "【TReader】密码修改确认",
@@ -148,7 +148,7 @@ public class UserController {
     public Response addSubscriptionUrl(HttpSession httpSession,
                                        @RequestBody SubscriptionDTO subscriptionDTO) {
 
-        User user = (User)httpSession.getAttribute("user");
+        User user = (User) httpSession.getAttribute("user");
         userService.addSubscriptionUrl(user, subscriptionDTO);
         return Response.success("订阅成功");
     }
@@ -167,5 +167,9 @@ public class UserController {
         return userUrlDTO;
     }
 
+    @GetMapping("/getTags")
+    public List<Tag> getTags(@RequestParam String email) {
+        return userService.findAllTagsByEmail(email);
+    }
 
 }

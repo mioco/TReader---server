@@ -4,10 +4,12 @@ package com.treader.demo.service;
 import com.treader.demo.dto.SubscriptionDTO;
 import com.treader.demo.dto.UserDTO;
 import com.treader.demo.dto.UserUrlTagDTO;
+import com.treader.demo.model.Tag;
 import com.treader.demo.model.User;
 
 import javax.servlet.http.HttpSession;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 public interface UserService {
 
@@ -22,5 +24,7 @@ public interface UserService {
     void addSubscriptionUrl(User user, SubscriptionDTO subscriptionDTO);
 
     UserUrlTagDTO findByEmailWithUrl(String email);
+
+    List<Tag> findAllTagsByEmail(String email);
 
 }
