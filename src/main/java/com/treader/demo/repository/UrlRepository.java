@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UrlRepository extends JpaRepository<Url, Integer> {
     Url findByUrl(String url);
+    Url findByDomain(String domain);
 }

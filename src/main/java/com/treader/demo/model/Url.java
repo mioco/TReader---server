@@ -11,8 +11,16 @@ public class Url {
     private Integer id;
 
     private String url;
+    private String domain;
     private String tempItem;
 
+    public String getDomain() {
+        return domain;
+    }
+
+    public void setDomain(String domain) {
+        this.domain = domain;
+    }
 
     public Integer getId() {
         return id;

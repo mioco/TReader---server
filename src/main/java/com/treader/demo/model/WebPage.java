@@ -13,6 +13,8 @@ public class WebPage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    private Integer urlId;
+
     @Column(columnDefinition = "text")
     private String html;
     @Column(columnDefinition = "text")

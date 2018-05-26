@@ -9,7 +9,8 @@ create table tag (
 
 create table url (
   id        int primary key auto_increment,
-  url       varchar(255) null,
+  url       varchar(255) not null,
+  domian    varchar(255) not null,
   temp_item varchar(128) null,
   unique key uk_url(url)
 )
@@ -69,6 +70,7 @@ create table user_url (
 
 create table webpage (
   id   int primary key auto_increment,
+  url_id int not null ,
   html text,
   text text,
   url  varchar(4096),
@@ -78,4 +80,13 @@ create table webpage (
   default charset = UTF8
   comment 'webpage';
 
+create table webpage_tag (
+  id int primary key auto_increment,
+  webpage_id int not null,
+  tag_id int not null,
+  unique key uk_webpage_tag(webpage_id, tag_id)
+)
+  engine = Innodb
+  default charset = UTF8
+  comment 'url和tag和webpage的关联关系';
 

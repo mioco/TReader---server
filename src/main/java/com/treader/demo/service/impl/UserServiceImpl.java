@@ -9,6 +9,8 @@ import com.treader.demo.exception.LocalException;
 import com.treader.demo.model.*;
 import com.treader.demo.repository.*;
 import com.treader.demo.service.UserService;
+import com.treader.demo.util.UrlUtil;
+import edu.uci.ics.crawler4j.url.URLCanonicalizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -110,6 +112,9 @@ public class UserServiceImpl implements UserService {
             url = new Url();
             url.setTempItem(subscriptionDTO.getTempItem1(), subscriptionDTO.getTempItem2());
             url.setUrl(subscriptionDTO.getUrl());
+
+            String domain = UrlUtil.getDomain(subscriptionDTO.getUrl());
+            url.setDomain(domain);
             url = urlRepository.save(url);
         }
         Integer urlId = url.getId();

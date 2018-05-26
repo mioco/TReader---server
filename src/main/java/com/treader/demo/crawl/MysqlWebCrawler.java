@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 
 public class MysqlWebCrawler extends WebCrawler {
 
+
     private static final Logger logger = org.slf4j.LoggerFactory.getLogger(MysqlWebCrawler.class);
 
     private static Pattern FILE_ENDING_EXCLUSION_PATTERN = Pattern.compile(".*(\\.(" +
@@ -38,6 +39,7 @@ public class MysqlWebCrawler extends WebCrawler {
         return !FILE_ENDING_EXCLUSION_PATTERN.matcher(href).matches();
     }
 
+
     @Override
     public void visit(Page page) {
         String url = page.getWebURL().getURL();
@@ -56,6 +58,7 @@ public class MysqlWebCrawler extends WebCrawler {
             webPageService.savePage(page);
         }
     }
+
 
 }
 
