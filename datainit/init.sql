@@ -1,6 +1,6 @@
 create table tag (
   id  int primary key auto_increment,
-  tag varchar(255) not null ,
+  tag varchar(255) not null,
   unique key uk_tag(tag)
 )
   engine = Innodb
@@ -67,6 +67,15 @@ create table user_url (
   default charset = UTF8
   comment 'user_url';
 
-
+create table webpage (
+  id   int primary key auto_increment,
+  html text,
+  text text,
+  url  varchar(4096),
+  seen datetime
+)
+  engine = Innodb
+  default charset = UTF8
+  comment 'webpage';
 
 
