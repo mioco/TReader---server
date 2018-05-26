@@ -38,7 +38,7 @@ public class HomeController {
     }
 
 
-    @Scheduled(fixedRate = 20000)
+    @Scheduled(fixedRate = 1000*10)
     public void sendBack() {
         for (SimpUser user : userRegistry.getUsers()) {
             WebPage webPage = userService.findOneWebpage(user.getName());

@@ -176,14 +176,6 @@ public class UserServiceImpl implements UserService {
                     .collect(Collectors.toList());
             urlTagDTO.setTagList(tagList);
         }
-
-        CompletableFuture.runAsync(() -> {
-            try {
-                crawlService.startCrawl();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
         return urlTagDTO;
     }
 
