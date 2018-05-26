@@ -1,10 +1,7 @@
 package com.treader.demo.service.impl;
 
 import com.treader.demo.crawl.CrawlService;
-import com.treader.demo.dto.SubscriptionDTO;
-import com.treader.demo.dto.UrlTagDTO;
-import com.treader.demo.dto.UserDTO;
-import com.treader.demo.dto.UserUrlTagDTO;
+import com.treader.demo.dto.*;
 import com.treader.demo.exception.CustomError;
 import com.treader.demo.exception.LocalException;
 import com.treader.demo.model.*;
@@ -22,10 +19,7 @@ import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpSession;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
@@ -279,6 +273,31 @@ public class UserServiceImpl implements UserService {
     @Override
     public WebPage findOneWebpage(String email) {
         return getWebPageFromCache(email);
+    }
+
+    @Override
+    public List<WebPageDTO> findAllWebpages(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            return Collections.emptyList();
+        }
+        List<UserUrl> userUrlList = userUrlRepository.findByUserId(user.getId());
+        if (CollectionUtils.isEmpty(userUrlList)) {
+            return Collections.emptyList();
+        }
+        List<WebPageDTO> webPageDTOList = new ArrayList<>();
+        userUrlList.forEach(userUrl -> {
+            Url url = urlRepository.findById(userUrl.getUrlId()).get();
+            List<WebPage> webpageList = webPageRepository.findByUrlId(url.getId());
+            if (!CollectionUtils.isEmpty(webpageList)) {
+                webpageList.forEach(webPage -> {
+                    WebPageDTO webPageDTO = new WebPageDTO();
+                    BeanUtils.copyProperties(webPage, webPageDTO);
+                    webPageDTOList.add(webPageDTO);
+                });
+            }
+        });
+        return webPageDTOList;
     }
 
 }

@@ -1,10 +1,7 @@
 package com.treader.demo.service;
 
 
-import com.treader.demo.dto.SubscriptionDTO;
-import com.treader.demo.dto.UrlTagDTO;
-import com.treader.demo.dto.UserDTO;
-import com.treader.demo.dto.UserUrlTagDTO;
+import com.treader.demo.dto.*;
 import com.treader.demo.model.Tag;
 import com.treader.demo.model.User;
 import com.treader.demo.model.WebPage;
@@ -30,5 +27,7 @@ public interface UserService {
     List<Tag> findAllTagsByEmail(String email);
 
     WebPage findOneWebpage(String email);
+
+    List<WebPageDTO> findAllWebpages(String email);
 
 }

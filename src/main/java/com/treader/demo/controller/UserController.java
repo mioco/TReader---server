@@ -168,4 +168,9 @@ public class UserController {
         return userService.findAllTagsByEmail(email);
     }
 
+    @GetMapping("/webpages")
+    public List<WebPageDTO> getWebPages(@RequestParam String email) {
+        return userService.findAllWebpages(email);
+    }
+
 }
