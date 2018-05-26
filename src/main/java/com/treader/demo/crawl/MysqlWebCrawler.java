@@ -36,7 +36,11 @@ public class MysqlWebCrawler extends WebCrawler {
     @Override
     public boolean shouldVisit(Page referringPage, WebURL url) {
         String href = url.getURL().toLowerCase();
-        return !FILE_ENDING_EXCLUSION_PATTERN.matcher(href).matches();
+        boolean one =  !FILE_ENDING_EXCLUSION_PATTERN.matcher(href).matches() && webPageService.shouldVisit(url);
+        if (one || url.getDepth() < 2) {
+            return true;
+        }
+        return false;
     }
 
 

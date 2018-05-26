@@ -10,7 +10,7 @@ create table tag (
 create table url (
   id        int primary key auto_increment,
   url       varchar(255) not null,
-  domian    varchar(255) not null,
+  domain    varchar(255) not null,
   temp_item varchar(128) null,
   unique key uk_url(url)
 )
@@ -71,10 +71,11 @@ create table user_url (
 create table webpage (
   id   int primary key auto_increment,
   url_id int not null ,
-  html text,
+  html longtext ,
   text text,
-  url  varchar(4096),
-  seen datetime
+  url  varchar(255),
+  seen datetime,
+  unique key uk_url(url)
 )
   engine = Innodb
   default charset = UTF8

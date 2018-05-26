@@ -1,5 +1,6 @@
 package com.treader.demo.service.impl;
 
+import com.treader.demo.crawl.CrawlService;
 import com.treader.demo.dto.SubscriptionDTO;
 import com.treader.demo.dto.UrlTagDTO;
 import com.treader.demo.dto.UserDTO;
@@ -9,21 +10,23 @@ import com.treader.demo.exception.LocalException;
 import com.treader.demo.model.*;
 import com.treader.demo.repository.*;
 import com.treader.demo.service.UserService;
+import com.treader.demo.util.RedisService;
 import com.treader.demo.util.UrlUtil;
-import edu.uci.ics.crawler4j.url.URLCanonicalizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.servlet.tags.UrlTag;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpSession;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import static com.treader.demo.util.MD5Util.getMD5;
@@ -40,15 +43,21 @@ public class UserServiceImpl implements UserService {
     private TagUrlRepository tagUrlRepository;
     private UserUrlRepository userUrlRepository;
     private UserTagRepository userTagRepository;
+    private WebPageRepository webPageRepository;
+    private RedisService redisService;
+    private CrawlService crawlService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, UrlRepository urlRepository, TagRepository tagRepository, TagUrlRepository tagUrlRepository, UserUrlRepository userUrlRepository, UserTagRepository userTagRepository) {
+    public UserServiceImpl(UserRepository userRepository, UrlRepository urlRepository, TagRepository tagRepository, TagUrlRepository tagUrlRepository, UserUrlRepository userUrlRepository, UserTagRepository userTagRepository, WebPageRepository webPageRepository, RedisService redisService, CrawlService crawlService) {
         this.userRepository = userRepository;
         this.urlRepository = urlRepository;
         this.tagRepository = tagRepository;
         this.tagUrlRepository = tagUrlRepository;
         this.userUrlRepository = userUrlRepository;
         this.userTagRepository = userTagRepository;
+        this.webPageRepository = webPageRepository;
+        this.redisService = redisService;
+        this.crawlService = crawlService;
     }
 
 
@@ -167,6 +176,14 @@ public class UserServiceImpl implements UserService {
                     .collect(Collectors.toList());
             urlTagDTO.setTagList(tagList);
         }
+
+        CompletableFuture.runAsync(() -> {
+            try {
+                crawlService.startCrawl();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
         return urlTagDTO;
     }
 
@@ -214,10 +231,62 @@ public class UserServiceImpl implements UserService {
             return Collections.emptyList();
         }
         List<UserTag> userTagList = userTagRepository.findByUserId(user.getId());
-        List<Tag> tagList = userTagList.stream()
+        return userTagList.stream()
                 .map(userTag -> tagRepository.findById(userTag.getTagId()).get())
                 .collect(Collectors.toList());
-        return tagList;
+    }
+
+    private void setWebpageToCache(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            return;
+        }
+        List<UserUrl> userUrlList = userUrlRepository.findByUserId(user.getId());
+        if (CollectionUtils.isEmpty(userUrlList)) {
+            return;
+        }
+
+        List<Url> urlList = userUrlList.stream()
+                .map(userUrl -> urlRepository.findById(userUrl.getUrlId()).get())
+                .collect(Collectors.toList());
+        if (CollectionUtils.isEmpty(urlList)) {
+            return;
+        }
+
+        List<Integer> webPageIds = new ArrayList<>();
+        urlList.forEach(url -> {
+            List<WebPage> webPages = webPageRepository.findByUrlId(url.getId());
+            if (!CollectionUtils.isEmpty(webPages)) {
+                for (WebPage webPage : webPages) {
+                    webPageIds.add(webPage.getId());
+                }
+            }
+        });
+        String key = "webpages_" + email;
+        if (!CollectionUtils.isEmpty(webPageIds)) {
+            webPageIds.forEach(id -> {
+                redisService.rpush(key, String.valueOf(id));
+            });
+        }
+
+    }
+
+    private WebPage getWebPageFromCache(String email) {
+        String webpageId = redisService.lpop("webpages_" + email);
+        if (StringUtils.isEmpty(webpageId)) {
+            setWebpageToCache(email);
+            webpageId = redisService.lpop("webpages_" + email);
+        }
+
+        if (StringUtils.isEmpty(webpageId)) {
+            return null;
+        }
+        return webPageRepository.findById(Integer.valueOf(webpageId)).get();
+    }
+
+    @Override
+    public WebPage findOneWebpage(String email) {
+        return getWebPageFromCache(email);
     }
 
 }

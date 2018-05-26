@@ -44,8 +44,8 @@ public class RedisService {
         redisTemplate.opsForValue().set(key, value, timeout, unit);
     }
 
-    public void lpop(String key) {
-        redisTemplate.opsForList().leftPop(key);
+    public String lpop(String key) {
+        return redisTemplate.opsForList().leftPop(key);
     }
 
     public void rpush(String key, String value) {

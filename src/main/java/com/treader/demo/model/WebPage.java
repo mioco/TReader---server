@@ -15,7 +15,7 @@ public class WebPage {
 
     private Integer urlId;
 
-    @Column(columnDefinition = "text")
+    @Column(columnDefinition = "longtext")
     private String html;
     @Column(columnDefinition = "text")
     private String text;

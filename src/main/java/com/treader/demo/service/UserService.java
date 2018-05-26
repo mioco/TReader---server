@@ -7,6 +7,7 @@ import com.treader.demo.dto.UserDTO;
 import com.treader.demo.dto.UserUrlTagDTO;
 import com.treader.demo.model.Tag;
 import com.treader.demo.model.User;
+import com.treader.demo.model.WebPage;
 
 import javax.servlet.http.HttpSession;
 import java.security.NoSuchAlgorithmException;
@@ -27,5 +28,7 @@ public interface UserService {
     UserUrlTagDTO findByEmailWithUrl(String email);
 
     List<Tag> findAllTagsByEmail(String email);
+
+    WebPage findOneWebpage(String email);
 
 }

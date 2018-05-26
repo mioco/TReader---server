@@ -36,18 +36,18 @@ public class Url {
     public String getTempItem() { return tempItem; }
     public void setTempItem(String tempItem1, String tempItem2) {
         try {
-            String[] str1_path = new URL(tempItem1).getPath().split("/");
-            String[] str2_path = new URL(tempItem2).getPath().split("/");
+            String[] str1_path = tempItem1.split("/");
+            String[] str2_path = tempItem2.split("/");
 
             StringBuilder newUrl = new StringBuilder();
             for (int i = 0; i < str1_path.length; i++) {
                 if (!str1_path[i].equals(str2_path[i])) {
-                    newUrl.append(":*");
+                    newUrl.append(".*");
                 } else {
                     newUrl.append(str1_path[i] + "/");
                 }
             }
-            this.tempItem = new URL(tempItem1).getHost() + newUrl.toString();
+            this.tempItem = newUrl.toString();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
