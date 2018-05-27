@@ -47,7 +47,7 @@ public class Url {
                     newUrl.append(str1_path[i] + "/");
                 }
             }
-            this.tempItem = newUrl.toString();
+            this.tempItem = newUrl.toString()+"/";
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
