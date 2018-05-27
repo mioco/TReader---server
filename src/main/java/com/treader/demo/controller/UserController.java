@@ -87,8 +87,9 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public UserDTO login(HttpSession session, @RequestParam String email, @RequestParam String password) throws NoSuchAlgorithmException {
-        return userService.login(session, email, password);
+    public UserUrlTagDTO login(HttpSession session, @RequestParam String email, @RequestParam String password) throws NoSuchAlgorithmException {
+        userService.login(session, email, password);
+        return userService.findByEmailWithUrl(email);
     }
 
     @PostMapping("/logout")
@@ -134,11 +135,9 @@ public class UserController {
     }
 
     @GetMapping("/authority")
-    public UserDTO authority(HttpSession session) {
+    public UserUrlTagDTO authority(HttpSession session) {
         User user = (User) session.getAttribute("user");
-        UserDTO userDTO = new UserDTO();
-        BeanUtils.copyProperties(user, userDTO);
-        return userDTO;
+        return userService.findByEmailWithUrl(user.getEmail());
     }
 
     @PostMapping("/addSubscriptionUrl")
@@ -154,14 +153,14 @@ public class UserController {
         return urlService.findAll();
     }
 
-    @GetMapping(path = "/profile")
-    public UserUrlTagDTO getAllUsers(@RequestParam String email) {
-        UserUrlTagDTO userUrlDTO = userService.findByEmailWithUrl(email);
-        if (userUrlDTO == null) {
-            throw new LocalException(CustomError.ACCOUNT_NOT_FOUND);
-        }
-        return userUrlDTO;
-    }
+//    @GetMapping(path = "/profile")
+//    public UserUrlTagDTO getAllUsers(@RequestParam String email) {
+//        UserUrlTagDTO userUrlDTO = userService.findByEmailWithUrl(email);
+//        if (userUrlDTO == null) {
+//            throw new LocalException(CustomError.ACCOUNT_NOT_FOUND);
+//        }
+//        return userUrlDTO;
+//    }
 
     @GetMapping("/getTags")
     public List<Tag> getTags(@RequestParam String email) {
